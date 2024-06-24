@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+    <link rel="icon" type="image/png" href="static/sillicat.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <style>
+        ::-webkit-scrollbar {
+          width: 20px;
+        }
+        ::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 5px grey; 
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: rgb(83, 68, 167); 
+          border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #b30000; 
+        }
+        </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Downloader</h1>
+        <form id="urlForm">
+            <label for="url">YouTube URL:</label>
+            <input type="text" id="url" name="url" required>
+            <button type="submit">Get Info</button>
+        </form>
+        <div id="videoInfo" style="display:none;">
+            <h2 id="videoTitle"></h2>
+            <img id="thumbnail" src="" alt="Video Thumbnail">
+            <form id="downloadForm" method="post" action="/download">
+                <input type="hidden" name="url" id="downloadUrl">
+                <label for="itag">Select Quality:</label>
+                <select name="itag" id="itag" required></select>
+                <button class="btn" type="submit"><i class="fa fa-download"></i> Download</button>
+            </form>
+        </div>
+    </div>
+    <div class="links">
+        <a href="https://www.youtube.com/" target="_blank" class="youtube-link">YouTube</a>
+        <a href="https://discord.gg/MqvmBu5tWa" target="_blank" class="discord-link">Discord</a>
+        <a href="https://github.com/" target="_blank" class="github-link">GitHub</a>
+    </div>
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url').value;
+
+            // Open the Discord URL in a new tab
+            window.open('https://discord.gg/MqvmBu5tWa', '_blank');
+
+            // Fetch video info
+            fetch('/get_info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(url)}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('videoTitle').innerText = data.title;
+                document.getElementById('thumbnail').src = data.thumbnail;
+                document.getElementById('itag').innerHTML = data.streams.map(stream => 
+                    `<option value="${stream.itag}">${stream.resolution}</option>`
+                ).join('');
+                document.getElementById('downloadUrl').value = url;
+                document.getElementById('videoInfo').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
