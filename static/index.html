@@ -4,7 +4,7 @@
     <title>YouTube Downloader</title>
     <link rel="icon" type="image/png" href="static/sillicat.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
     <style>
         ::-webkit-scrollbar {
           width: 20px;
@@ -20,7 +20,7 @@
         ::-webkit-scrollbar-thumb:hover {
           background: #b30000; 
         }
-        </style>
+    </style>
 </head>
 <body>
     <div class="container">
@@ -32,7 +32,7 @@
         </form>
         <div id="videoInfo" style="display:none;">
             <h2 id="videoTitle"></h2>
-            <img id="thumbnail" src="" alt="Video Thumbnail">
+            <img id="thumbnail" class="thumbnail" src="" alt="Video Thumbnail">
             <form id="downloadForm" method="post" action="/download">
                 <input type="hidden" name="url" id="downloadUrl">
                 <label for="itag">Select Quality:</label>
@@ -42,19 +42,21 @@
         </div>
     </div>
     <div class="links">
-        <a href="https://www.youtube.com/" target="_blank" class="youtube-link">YouTube</a>
-        <a href="https://discord.gg/MqvmBu5tWa" target="_blank" class="discord-link">Discord</a>
-        <a href="https://github.com/" target="_blank" class="github-link">GitHub</a>
+        <a href="https://www.youtube.com/@cateroni" target="_blank" class="youtube-link">
+            <img src="static/youtube.svg" alt="YouTube">YouTube
+        </a>
+        <a href="https://discord.gg/MqvmBu5tWa" target="_blank" class="discord-link">
+            <img src="static/discord.svg" alt="Discord">Discord
+        </a>
+        <a href="https://github.com/kit2d2alt" target="_blank" class="github-link">
+            <img src="static/github.svg" alt="GitHub">GitHub
+        </a>
     </div>
     <script>
         document.getElementById('urlForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const url = document.getElementById('url').value;
-
-            // Open the Discord URL in a new tab
             window.open('https://discord.gg/MqvmBu5tWa', '_blank');
-
-            // Fetch video info
             fetch('/get_info', {
                 method: 'POST',
                 headers: {
